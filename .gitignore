@@ -13,3 +13,9 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Misc. local artifacts
+notes.txt
+
+# IDE specific artifacts
+.idea/
