@@ -1,6 +1,6 @@
 package public_domain_request
 
-// PublicDomainRequest is a default implementation of the RequestForPublicDomain
+// PublicDomainRequest describes the data required to register a public domain for the RegisterPublicDomain usecase
 type PublicDomainRequest struct {
 	userId int64
 	domainId int64
