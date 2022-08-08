@@ -12,16 +12,16 @@ type PublicDomain struct {
 	registeredName registered_name.RegisteredName
 }
 
-func NewPublicDomain(domainId id.Id, domain string) (*PublicDomain, error) {
+func NewPublicDomain(domainId id.Id, domain string) (PublicDomain, error) {
 
 	_registeredName, err := registered_name.NewFromString(domain)
 
 	if err != nil {
 		errorMessage := "Error creating a Public Domain: " + err.Error()
-		return &PublicDomain{}, errors.New(errorMessage)
+		return PublicDomain{}, errors.New(errorMessage)
 	}
 
-	return &PublicDomain{
+	return PublicDomain{
 		domainId: domainId,
 		registeredName: _registeredName,
 	}, nil
