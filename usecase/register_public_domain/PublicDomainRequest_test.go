@@ -13,13 +13,16 @@ func setup(t *testing.T) {
 // todo - updated description
 func Test_Instantiate_PublicDomainRequest(t *testing.T) {
 	setup(t)
+	// Arrange
 	var userId int64 = 1541815603606036480
 	registeredName := "attestify.io"
+
+	// Act
 	_, err := NewPublicDomainRequest(userId, registeredName)
 
-	// Fatal use to end test if an error object was not returned because the expressions after this evaluate the error object
+	// Assert
 	if err != nil {
-		t.Fatalf("An error was returned when no error was expected.\n Error: %s ", err.Error())
+		t.Errorf("An error was returned when no error was expected.\n Error: %s ", err.Error())
 	}
 
 }

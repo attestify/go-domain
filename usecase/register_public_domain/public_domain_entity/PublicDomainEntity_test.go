@@ -1,9 +1,13 @@
-package register_public_domain
+package public_domain_entity
 
 import (
 	"github.com/attestify/go-kernel/identity/id"
 	"testing"
 )
+
+func setup(t *testing.T) {
+	t.Parallel()
+}
 
 /** Happy Paths **/
 
