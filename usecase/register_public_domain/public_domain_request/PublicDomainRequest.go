@@ -1,18 +1,16 @@
 package public_domain_request
 
-import "github.com/attestify/go-kernel/identity/id"
-
 // PublicDomainRequest is a default implementation of the RequestForPublicDomain
 type PublicDomainRequest struct {
-	userId id.Id
-	domainId id.Id
+	userId int64
+	domainId int64
 	domain string
 }
 
 func New(userId int64, domain string) (*PublicDomainRequest, error) {
 	return &PublicDomainRequest{
-		userId: id.New(userId),
-		domainId: id.New(0),
+		userId: userId,
+		domainId: 0,
 		domain: domain,
 	}, nil
 }
