@@ -22,3 +22,7 @@ func (request *PublicDomainRequest) Domain() string {
 func (request *PublicDomainRequest) UserId() int64 {
 	return request.userId
 }
+
+func (request *PublicDomainRequest) DomainId() int64 {
+	return request.domainId
+}

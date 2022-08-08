@@ -11,20 +11,26 @@ func setup(t *testing.T) {
 
 // Test_Instantiate_PublicDomainRequest should successfully instantiate a PublicDomainRequest without error given the domain entered is "attestify.io"
 // todo - updated description
-func Test_Instantiate_PublicDomainRequest(t *testing.T) {
+func Test_Instantiate_PublicDomainRequest_Successfully(t *testing.T) {
 	setup(t)
 	// Arrange
 	var userId int64 = 1541815603606036480
 	registeredName := "attestify.io"
 
 	// Act
-	_, err := New(userId, registeredName)
+	request, err := New(userId, registeredName)
 
 	// Assert
 	if err != nil {
 		t.Errorf("An error was returned when no error was expected.\n Error: %s ", err.Error())
 	}
 
+	actualDefaultDomainId := request.DomainId()
+	var expectedDefaultDomainId int64 = 0
+	if actualDefaultDomainId != expectedDefaultDomainId {
+		t.Errorf("The exptected domain was not returned. \n Actual: %d \n Expected: %d", actualDefaultDomainId, expectedDefaultDomainId)
+
+	}
 }
 
 // todo - updated description
@@ -77,11 +83,9 @@ func Test_Instantiate_PublicDomainRequest_Get_UserId_Successfully(t *testing.T) 
 	var expected int64 = 1541815603606036480
 	if  actual != expected {
 		t.Errorf("The exptected domain was not returned. \n Actual: %d \n Expected: %d", actual, expected)
-
 	}
 
 }
-	// todo - validate the get-userId function
 	// todo - mutate and a public-domain-id without error, then get the public-domain-id
 
 	//actual := request.Domain()
