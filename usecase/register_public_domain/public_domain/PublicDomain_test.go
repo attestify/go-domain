@@ -1,4 +1,4 @@
-package public_domain_entity
+package public_domain
 
 import (
 	"testing"
