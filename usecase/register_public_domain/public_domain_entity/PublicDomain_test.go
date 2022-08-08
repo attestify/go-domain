@@ -1,7 +1,6 @@
 package public_domain_entity
 
 import (
-	"github.com/attestify/go-kernel/identity/id"
 	"testing"
 )
 
@@ -17,7 +16,7 @@ func setup(t *testing.T) {
 // then a PublicDomain entity should be created without an error.
 func Test_Instantiate_PublicDomain(t *testing.T) {
 	setup(t)
-	domainId := id.New(1541815603606036480)
+	var domainId int64 = 1541815603606036480
 	registeredName := "attestify.io"
 	_, err := New(domainId, registeredName)
 
@@ -33,7 +32,7 @@ func Test_Instantiate_PublicDomain(t *testing.T) {
 // given the domain id provided is "1541815603606036480"
 func Test_Instantiate_PublicDomain_ValueCheck(t *testing.T) {
 	setup(t)
-	domainId := id.New(1541815603606036480)
+	var domainId int64 = 1541815603606036480
 	registeredName := "attestify.io"
 	entity, err := New(domainId, registeredName)
 
@@ -42,7 +41,7 @@ func Test_Instantiate_PublicDomain_ValueCheck(t *testing.T) {
 		t.Fatalf("An error was returned when no error was expected.\n Error: %s ", err.Error())
 	}
 
-	name := entity.RegisteredName()
+	name := entity.Domain()
 	actual := name.Value()
 	expected := "attestify.io"
 	if expected != actual {
@@ -57,7 +56,7 @@ func Test_Instantiate_PublicDomain_ValueCheck(t *testing.T) {
 // argument of 1attestify.io-com is provided
 func Test_Instantiate_PublicDomain_Error(t *testing.T) {
 	setup(t)
-	domainId := id.New(1541815603606036480)
+	var domainId int64 = 1541815603606036480
 	badRegisteredName := "1attestify.io-com"
 	_, err := New(domainId, badRegisteredName)
 

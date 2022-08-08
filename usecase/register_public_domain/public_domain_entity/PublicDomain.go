@@ -6,13 +6,13 @@ import (
 	"github.com/attestify/go-kernel/uri/registered_name"
 )
 
-// PublicDomain is the entity
+// PublicDomain is the default implementation for the PublicDomainEntity interface
 type PublicDomain struct {
 	domainId id.Id
 	registeredName registered_name.RegisteredName
 }
 
-func New(domainId id.Id, domain string) (PublicDomain, error) {
+func New(domainId int64, domain string) (PublicDomain, error) {
 
 	_registeredName, err := registered_name.NewFromString(domain)
 
@@ -22,16 +22,16 @@ func New(domainId id.Id, domain string) (PublicDomain, error) {
 	}
 
 	return PublicDomain{
-		domainId: domainId,
+		domainId: id.New(domainId),
 		registeredName: _registeredName,
 	}, nil
 
 }
 
-func (pd *PublicDomain) RegisteredName() registered_name.RegisteredName {
+func (pd *PublicDomain) Domain() registered_name.RegisteredName {
 	return pd.registeredName
 }
 
-func (pd *PublicDomain) DomainId() id.Id {
+func (pd *PublicDomain) Id() id.Id {
 	return pd.domainId
 }
