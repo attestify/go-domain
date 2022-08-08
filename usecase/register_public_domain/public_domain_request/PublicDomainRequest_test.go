@@ -96,17 +96,16 @@ func Test_Update_Default_DomainId_Successfully(t *testing.T) {
 
 	// Act
 	request, err := New(userId, registeredName)
-	request.UpdateDomainId(1541815603606036481)
-
-	// Assert
 	if err != nil {
 		t.Errorf("An error was returned when no error was expected.\n Error: %s ", err.Error())
 	}
+	request.UpdateDomainId(1541815603606036481)
 
-	actualDefaultDomainId := request.DomainId()
-	var expectedDefaultDomainId int64 = 1541815603606036481
-	if actualDefaultDomainId != expectedDefaultDomainId {
-		t.Errorf("The exptected domain was not returned. \n Actual: %d \n Expected: %d", actualDefaultDomainId, expectedDefaultDomainId)
+	// Assert
+	actual := request.DomainId()
+	var expected int64 = 1541815603606036481
+	if actual != expected {
+		t.Errorf("The exptected domain was not returned. \n Actual: %d \n Expected: %d", actual, expected)
 
 	}
 }
