@@ -18,3 +18,7 @@ func New(userId int64, domain string) (*PublicDomainRequest, error) {
 func (request *PublicDomainRequest) Domain() string {
 	return request.domain
 }
+
+func (request *PublicDomainRequest) UserId() int64 {
+	return request.userId
+}
