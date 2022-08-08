@@ -26,3 +26,7 @@ func (request *PublicDomainRequest) UserId() int64 {
 func (request *PublicDomainRequest) DomainId() int64 {
 	return request.domainId
 }
+
+func (request *PublicDomainRequest) UpdateDomainId(id int64) {
+	request.domainId = id
+}

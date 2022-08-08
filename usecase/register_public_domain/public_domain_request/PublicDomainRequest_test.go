@@ -86,10 +86,27 @@ func Test_Instantiate_PublicDomainRequest_Get_UserId_Successfully(t *testing.T) 
 	}
 
 }
-	// todo - mutate and a public-domain-id without error, then get the public-domain-id
 
-	//actual := request.Domain()
-	//expected := "attestify.io"
-	//if  actual != expected {
-	//t.Errorf("The exptected domain was not returned. \n Actual: %s \n Expected: %s", actual, expected)
-	//
+// todo - mutate and a public-domain-id without error, then get the public-domain-id
+func Test_Update_Default_DomainId_Successfully(t *testing.T) {
+	setup(t)
+	// Arrange
+	var userId int64 = 1541815603606036480
+	registeredName := "attestify.io"
+
+	// Act
+	request, err := New(userId, registeredName)
+	request.UpdateDomainId(1541815603606036481)
+
+	// Assert
+	if err != nil {
+		t.Errorf("An error was returned when no error was expected.\n Error: %s ", err.Error())
+	}
+
+	actualDefaultDomainId := request.DomainId()
+	var expectedDefaultDomainId int64 = 1541815603606036481
+	if actualDefaultDomainId != expectedDefaultDomainId {
+		t.Errorf("The exptected domain was not returned. \n Actual: %d \n Expected: %d", actualDefaultDomainId, expectedDefaultDomainId)
+
+	}
+}
