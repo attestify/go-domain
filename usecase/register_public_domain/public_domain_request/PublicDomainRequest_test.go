@@ -18,7 +18,7 @@ func Test_Instantiate_PublicDomainRequest(t *testing.T) {
 	registeredName := "attestify.io"
 
 	// Act
-	_, err := NewPublicDomainRequest(userId, registeredName)
+	_, err := New(userId, registeredName)
 
 	// Assert
 	if err != nil {

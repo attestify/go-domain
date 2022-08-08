@@ -9,7 +9,7 @@ type PublicDomainRequest struct {
 	domain string
 }
 
-func NewPublicDomainRequest(userId int64, domain string) (*PublicDomainRequest, error) {
+func New(userId int64, domain string) (*PublicDomainRequest, error) {
 	return &PublicDomainRequest{
 		userId: id.New(userId),
 		domainId: id.New(0),
