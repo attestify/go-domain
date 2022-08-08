@@ -87,7 +87,7 @@ func Test_Instantiate_PublicDomainRequest_Get_UserId_Successfully(t *testing.T) 
 
 }
 
-// todo - mutate and a public-domain-id without error, then get the public-domain-id
+// todo - updated description
 func Test_Update_Default_DomainId_Successfully(t *testing.T) {
 	setup(t)
 	// Arrange

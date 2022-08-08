@@ -7,8 +7,8 @@ type PublicDomainRequest struct {
 	domain string
 }
 
-func New(userId int64, domain string) (*PublicDomainRequest, error) {
-	return &PublicDomainRequest{
+func New(userId int64, domain string) (PublicDomainRequest, error) {
+	return PublicDomainRequest{
 		userId: userId,
 		domainId: 0,
 		domain: domain,
