@@ -79,6 +79,8 @@ func Test_Instantiate_PublicDomainRequest_Get_UserId_Successfully(t *testing.T) 
 		t.Errorf("The exptected domain was not returned. \n Actual: %d \n Expected: %d", actual, expected)
 
 	}
+
+}
 	// todo - validate the get-userId function
 	// todo - mutate and a public-domain-id without error, then get the public-domain-id
 
@@ -87,4 +89,3 @@ func Test_Instantiate_PublicDomainRequest_Get_UserId_Successfully(t *testing.T) 
 	//if  actual != expected {
 	//t.Errorf("The exptected domain was not returned. \n Actual: %s \n Expected: %s", actual, expected)
 	//
-}
