@@ -1,4 +1,4 @@
-package register_public_domain
+package public_domain_request
 
 import "github.com/attestify/go-kernel/identity/id"
 
@@ -10,7 +10,7 @@ type PublicDomainRequest struct {
 }
 
 func NewPublicDomainRequest(userId int64, domain string) (*PublicDomainRequest, error) {
-	return &PublicDomainRequest {
+	return &PublicDomainRequest{
 		userId: id.New(userId),
 		domainId: id.New(0),
 		domain: domain,

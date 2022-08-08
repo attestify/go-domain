@@ -1,4 +1,4 @@
-package register_public_domain
+package public_domain_request
 
 import (
 	"testing"
