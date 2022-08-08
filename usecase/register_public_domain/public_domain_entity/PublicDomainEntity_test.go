@@ -19,7 +19,7 @@ func Test_Instantiate_PublicDomain(t *testing.T) {
 	setup(t)
 	domainId := id.New(1541815603606036480)
 	registeredName := "attestify.io"
-	_, err := NewPublicDomain(domainId, registeredName)
+	_, err := New(domainId, registeredName)
 
 	// Fatal use to end test if an error object was not returned because the expressions after this evaluate the error object
 	if err != nil {
@@ -35,7 +35,7 @@ func Test_Instantiate_PublicDomain_ValueCheck(t *testing.T) {
 	setup(t)
 	domainId := id.New(1541815603606036480)
 	registeredName := "attestify.io"
-	entity, err := NewPublicDomain(domainId, registeredName)
+	entity, err := New(domainId, registeredName)
 
 	// Fatal use to end test if an error object was not returned because the expressions after this evaluate the error object
 	if err != nil {
@@ -59,7 +59,7 @@ func Test_Instantiate_PublicDomain_Error(t *testing.T) {
 	setup(t)
 	domainId := id.New(1541815603606036480)
 	badRegisteredName := "1attestify.io-com"
-	_, err := NewPublicDomain(domainId, badRegisteredName)
+	_, err := New(domainId, badRegisteredName)
 
 	// Fatal use to end test if an error object was not returned because the expressions after this evaluate the error object
 	if err == nil {

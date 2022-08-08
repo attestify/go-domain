@@ -12,7 +12,7 @@ type PublicDomain struct {
 	registeredName registered_name.RegisteredName
 }
 
-func NewPublicDomain(domainId id.Id, domain string) (PublicDomain, error) {
+func New(domainId id.Id, domain string) (PublicDomain, error) {
 
 	_registeredName, err := registered_name.NewFromString(domain)
 
