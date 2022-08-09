@@ -5,6 +5,7 @@ import (
 	"github.com/attestify/go-domain/gateway"
 	"github.com/attestify/go-domain/usecase/register_public_domain"
 	"github.com/attestify/go-domain/usecase/register_public_domain/public_domain"
+	"github.com/attestify/go-domain/usecase/register_public_domain/public_domain_request"
 	"testing"
 )
 
@@ -31,21 +32,38 @@ func Test_Instantiate_RegisterPublicDomain_Successfully(t *testing.T) {
 	}
 }
 
-// todo - implement logic & test
+// todo - provide description
 func Test_ExecuteRequest_For_RegisterPublicDomain_Successfully(t *testing.T) {
 	setup(t)
-	t.Errorf("Test Not Implemented")
-	//// Assemble
-	//newDomainRequest, err = public_domain_request.New(1541815603606036480, "attestify.io")
-	//// todo - test for error
-	//
-	//// Act
-	//usecase, err = New(identityGateway, registrationGateway)
-	//err = usecase.MakeRequest(*newDomainRequest)
-	//// todo - test for error
-	//
-	//// Assert
-	//// todo - test for newDomainRequest.DomainId != 0
+	// Assemble
+	var expectedUserId int64 = 1541815603606036480
+	var expectedDomainId int64 = 1541815603606036481
+	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
+	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(expectedDomainId)
+	request, err := public_domain_request.New(expectedUserId, "attestify.io")
+	if err != nil {
+		t.Fatalf("An error was returned when instantiating the PublicDomainRequst. No error was expected."+
+			"\n Error: %s ", err.Error())
+	}
+
+	// Act
+	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
+	if err != nil {
+		t.Fatalf("An error was returned when instantiating the RegisterPublicDomain use case. No error was expected."+
+			"\n Error: %s ", err.Error())
+	}
+	err = usecase.MakeRequest(&request)
+	if err != nil {
+		t.Fatalf("An error was returned when invoking RegisterPublicDomain.MakeRequest(...). No error was expected."+
+			"\n Error: %s ", err.Error())
+	}
+
+	// Assert
+	actualDomainId := request.DomainId()
+	if expectedDomainId != actualDomainId {
+		t.Errorf("The PublicDomainRequest.DomainId() did not return the expecgted value. "+
+			"/n Expdected: %d /n Actual: %d", expectedDomainId, actualDomainId)
+	}
 
 }
 
@@ -75,7 +93,7 @@ func Test_Nil_IdentityGateway(t *testing.T) {
 
 }
 
-// todo - test with nil RegistrationGateway
+// todo - provide description
 func Test_Nil_RegistrationGateway(t *testing.T) {
 	setup(t)
 
@@ -98,6 +116,9 @@ func Test_Nil_RegistrationGateway(t *testing.T) {
 	}
 
 }
+
+// todo - test with error returned from identity gateway
+// todo - test with with returned from registration gateway
 
 /** Mocks **/
 
@@ -125,12 +146,10 @@ type RegistrationGatewayMock struct {
 func NewRegistrationGatewayMock(returnError bool) RegistrationGatewayMock {
 	return RegistrationGatewayMock{
 		returnError: returnError,
-		wasCalled:   false,
 	}
 }
 
 func (gateway RegistrationGatewayMock) RegisterPublicDomain(publicDomain public_domain.PublicDomain) error {
-	gateway.wasCalled = true
 	if gateway.returnError {
 		return errors.New("error with Registration Gateway")
 	} else {
