@@ -51,10 +51,35 @@ func Test_ExecuteRequest_For_RegisterPublicDomain_Successfully(t *testing.T) {
 
 /** Sad Path **/
 
-// todo - test with nil IdentityGateway
+// todo - provide description
+func Test_Nil_IdentityGateway(t *testing.T) {
+	setup(t)
+
+	// Assemble
+	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
+	var identityGateway gateway.IdentityGateway = nil
+
+	// Act
+	_, err := register_public_domain.New(identityGateway, registrationGateway)
+
+	// Assert
+	if err == nil {
+		t.Fatalf("an error is expected, although no error was thrown")
+	}
+
+	expected := "the provided identity gateway is nil, please provide a valid instance of an identity gateway"
+	actual := err.Error()
+	if expected != actual {
+		t.Errorf("The exptected error was not returned. \n Actual: %s \n Expected: %s", actual, expected)
+	}
+
+}
+
 // todo - test with nil RegistrationGateway
 
 /** Mocks **/
+
+/** IdentityGatewayMock **/
 type IdentityGatewayMock struct {
 	expectedId int64
 }
@@ -70,7 +95,7 @@ func (gateway IdentityGatewayMock) GenerateId() int64 {
 }
 
 
-
+/** RegistrationGatewayMock **/
 type RegistrationGatewayMock struct {
 	returnError bool
 	wasCalled bool
