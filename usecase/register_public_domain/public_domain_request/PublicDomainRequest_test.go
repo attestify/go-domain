@@ -7,6 +7,7 @@ import (
 func setup(t *testing.T) {
 	t.Parallel()
 }
+
 /** Happy Path Tests **/
 
 // Test_Instantiate_PublicDomainRequest should successfully instantiate a PublicDomainRequest without error given the domain entered is "attestify.io"
@@ -50,8 +51,8 @@ func Test_Instantiate_PublicDomainRequest_Get_Domain_Successfully(t *testing.T) 
 
 	actual := request.Domain()
 	expected := "attestify.io"
-	if  actual != expected {
-	t.Errorf("The exptected domain was not returned. \n Actual: %s \n Expected: %s", actual, expected)
+	if actual != expected {
+		t.Errorf("The exptected domain was not returned. \n Actual: %s \n Expected: %s", actual, expected)
 	}
 }
 
@@ -72,7 +73,7 @@ func Test_Instantiate_PublicDomainRequest_Get_UserId_Successfully(t *testing.T) 
 
 	actual := request.UserId()
 	var expected int64 = 1541815603606036480
-	if  actual != expected {
+	if actual != expected {
 		t.Errorf("The exptected domain was not returned. \n Actual: %d \n Expected: %d", actual, expected)
 	}
 

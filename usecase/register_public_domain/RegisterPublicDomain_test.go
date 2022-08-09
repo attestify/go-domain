@@ -116,18 +116,16 @@ func (gateway IdentityGatewayMock) GenerateId() int64 {
 	return gateway.expectedId
 }
 
-
 /** RegistrationGatewayMock **/
 type RegistrationGatewayMock struct {
 	returnError bool
-	wasCalled bool
-
+	wasCalled   bool
 }
 
-func NewRegistrationGatewayMock(returnError bool) RegistrationGatewayMock{
+func NewRegistrationGatewayMock(returnError bool) RegistrationGatewayMock {
 	return RegistrationGatewayMock{
 		returnError: returnError,
-		wasCalled: false,
+		wasCalled:   false,
 	}
 }
 
@@ -139,4 +137,3 @@ func (gateway RegistrationGatewayMock) RegisterPublicDomain(publicDomain public_
 		return nil
 	}
 }
-

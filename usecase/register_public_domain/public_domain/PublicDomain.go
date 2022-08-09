@@ -8,7 +8,7 @@ import (
 
 // PublicDomain is the default implementation for the PublicDomainEntity interface
 type PublicDomain struct {
-	domainId id.Id
+	domainId       id.Id
 	registeredName registered_name.RegisteredName
 }
 
@@ -22,7 +22,7 @@ func New(domainId int64, domain string) (PublicDomain, error) {
 	}
 
 	return PublicDomain{
-		domainId: id.New(domainId),
+		domainId:       id.New(domainId),
 		registeredName: _registeredName,
 	}, nil
 

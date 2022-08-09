@@ -4,5 +4,5 @@ import "github.com/attestify/go-domain/usecase/register_public_domain/public_dom
 
 // RegistrationGateway is the interface which defines the behaviors expected when invoking a gateway implementation for the public domain registration usecase.
 type RegistrationGateway interface {
-	 RegisterPublicDomain(publicDomain public_domain.PublicDomain) error
+	RegisterPublicDomain(publicDomain public_domain.PublicDomain) error
 }

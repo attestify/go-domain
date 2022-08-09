@@ -6,7 +6,7 @@ import (
 )
 
 type RegisterPublicDomain struct {
-	identityGateway gateway.IdentityGateway
+	identityGateway     gateway.IdentityGateway
 	registrationGateway RegistrationGateway
 }
 
@@ -23,7 +23,7 @@ func New(identityGateway gateway.IdentityGateway, registrationGateway Registrati
 	}
 
 	return RegisterPublicDomain{
-		identityGateway: identityGateway,
+		identityGateway:     identityGateway,
 		registrationGateway: registrationGateway,
 	}, nil
 }
