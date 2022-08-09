@@ -52,16 +52,7 @@ func Test_Instantiate_PublicDomainRequest_Get_Domain_Successfully(t *testing.T) 
 	expected := "attestify.io"
 	if  actual != expected {
 	t.Errorf("The exptected domain was not returned. \n Actual: %s \n Expected: %s", actual, expected)
-
-}
-// todo - validate the get-userId function
-// todo - mutate and a public-domain-id without error, then get the public-domain-id
-
-//actual := request.Domain()
-//expected := "attestify.io"
-//if  actual != expected {
-//t.Errorf("The exptected domain was not returned. \n Actual: %s \n Expected: %s", actual, expected)
-//
+	}
 }
 
 // todo - updated description

@@ -31,6 +31,7 @@ func Test_Instantiate_RegisterPublicDomain_Successfully(t *testing.T) {
 	}
 }
 
+// todo - implement logic & test
 func Test_ExecuteRequest_For_RegisterPublicDomain_Successfully(t *testing.T) {
 	setup(t)
 	t.Errorf("Test Not Implemented")
@@ -47,7 +48,6 @@ func Test_ExecuteRequest_For_RegisterPublicDomain_Successfully(t *testing.T) {
 	//// todo - test for newDomainRequest.DomainId != 0
 
 }
-
 
 /** Sad Path **/
 
