@@ -11,8 +11,14 @@ type RegisterPublicDomain struct {
 }
 
 func New(identityGateway gateway.IdentityGateway, registrationGateway RegistrationGateway) (RegisterPublicDomain, error) {
+
 	if identityGateway == nil {
 		_error := errors.New("the provided identity gateway is nil, please provide a valid instance of an identity gateway")
+		return RegisterPublicDomain{}, _error
+	}
+
+	if registrationGateway == nil {
+		_error := errors.New("the provided RegistrationGateway is nil, please provide a valid instance of a RegistrationGateway")
 		return RegisterPublicDomain{}, _error
 	}
 

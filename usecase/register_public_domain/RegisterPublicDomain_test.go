@@ -76,6 +76,28 @@ func Test_Nil_IdentityGateway(t *testing.T) {
 }
 
 // todo - test with nil RegistrationGateway
+func Test_Nil_RegistrationGateway(t *testing.T) {
+	setup(t)
+
+	// Assemble
+	var registrationGateway register_public_domain.RegistrationGateway = nil
+	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(1541815603606036480)
+
+	// Act
+	_, err := register_public_domain.New(identityGateway, registrationGateway)
+
+	// Assert
+	if err == nil {
+		t.Fatalf("an error is expected, although no error was thrown")
+	}
+
+	expected := "the provided RegistrationGateway is nil, please provide a valid instance of a RegistrationGateway"
+	actual := err.Error()
+	if expected != actual {
+		t.Errorf("The exptected error was not returned. \n Actual: %s \n Expected: %s", actual, expected)
+	}
+
+}
 
 /** Mocks **/
 
