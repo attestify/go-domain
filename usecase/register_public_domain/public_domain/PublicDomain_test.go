@@ -72,8 +72,6 @@ func Test_Instantiate_PublicDomain_Check_DomainId(t *testing.T) {
 
 }
 
-// todo - public domain id check
-
 /** Sad Paths **/
 
 // Test_Instantiate_PublicDomainRequest_Error should error on instantiation when a PublicDomainRequest with an

@@ -1,5 +1,5 @@
 package gateway
 
 type IdentityGateway interface {
-	GenerateId() int64
+	GenerateId() (int64, error)
 }

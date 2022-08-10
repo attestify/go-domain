@@ -5,6 +5,7 @@ import (
 	"github.com/attestify/go-domain/gateway"
 	"github.com/attestify/go-domain/usecase/register_public_domain"
 	"github.com/attestify/go-domain/usecase/register_public_domain/public_domain_request"
+	"strings"
 	"testing"
 )
 
@@ -129,7 +130,41 @@ func Test_Nil_RegistrationGateway(t *testing.T) {
 
 }
 
-// todo - test error for IdentityGateway
+// Given a user with Id "1541815603606036480" requests to register the public domain of "attestify.io"
+// and Given the IdentityGateway returns and error when invoked
+// then the RegisterPublicDomain usecase should return an error that starts with "error invoking the IdentityGateway:"
+func Test_IdentityGateway_Returns_Error(t *testing.T) {
+	setup(t)
+	// Assemble
+	var expectedUserId int64 = 1541815603606036480
+	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
+	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMockError()
+	request, err := public_domain_request.New(expectedUserId, "attestify.io")
+	if err != nil {
+		t.Fatalf("An error was returned when instantiating the PublicDomainRequst. No error was expected."+
+			"\n Error: %s ", err.Error())
+	}
+
+	// Act
+	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
+	if err != nil {
+		t.Fatalf("An error was returned when instantiating the RegisterPublicDomain use case. No error was expected."+
+			"\n Error: %s ", err.Error())
+	}
+	err = usecase.Register(&request)
+
+	// Assert
+	if err == nil {
+		t.Fatal("an error is expected, although no error was thrown")
+	}
+
+	containsError := strings.Contains(err.Error(), "error invoking the IdentityGateway:")
+	if !containsError {
+		t.Errorf("expcted the error to start with 'error invoking the IdentityGateway:' and it does not.")
+	}
+
+}
+
 // todo - test error for RegistrationGateway
 // todo - test error for with bad domain name within request
 
@@ -137,17 +172,31 @@ func Test_Nil_RegistrationGateway(t *testing.T) {
 
 /** IdentityGatewayMock **/
 type IdentityGatewayMock struct {
-	expectedId int64
+	expectedId  int64
+	returnError bool
 }
 
 func NewIdentityGatewayMock(expectedId int64) IdentityGatewayMock {
 	return IdentityGatewayMock{
-		expectedId: expectedId,
+		expectedId:  expectedId,
+		returnError: false,
 	}
 }
 
-func (gateway IdentityGatewayMock) GenerateId() int64 {
-	return gateway.expectedId
+func NewIdentityGatewayMockError() IdentityGatewayMock {
+	return IdentityGatewayMock{
+		expectedId:  0,
+		returnError: true,
+	}
+}
+
+func (gateway IdentityGatewayMock) GenerateId() (int64, error) {
+	if gateway.returnError {
+		return 0, errors.New("mock error from identity gateway")
+	} else {
+		return gateway.expectedId, nil
+	}
+
 }
 
 /** RegistrationGatewayMock **/
