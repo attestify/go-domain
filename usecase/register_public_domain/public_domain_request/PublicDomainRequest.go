@@ -7,12 +7,12 @@ type PublicDomainRequest struct {
 	domain   string
 }
 
-func New(userId int64, domain string) (PublicDomainRequest, error) {
+func New(userId int64, domain string) PublicDomainRequest {
 	return PublicDomainRequest{
 		userId:   userId,
 		domainId: 0,
 		domain:   domain,
-	}, nil
+	}
 }
 
 func (request *PublicDomainRequest) Domain() string {

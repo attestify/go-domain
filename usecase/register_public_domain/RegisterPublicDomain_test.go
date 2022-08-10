@@ -45,11 +45,7 @@ func Test_ExecuteRequest_For_RegisterPublicDomain_Successfully(t *testing.T) {
 	var expectedDomainId int64 = 1541815603606036481
 	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
 	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(expectedDomainId)
-	request, err := public_domain_request.New(expectedUserId, "attestify.io")
-	if err != nil {
-		t.Fatalf("An error was returned when instantiating the PublicDomainRequst. No error was expected."+
-			"\n Error: %s ", err.Error())
-	}
+	request := public_domain_request.New(expectedUserId, "attestify.io")
 
 	// Act
 	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
@@ -139,11 +135,7 @@ func Test_IdentityGateway_Returns_Error(t *testing.T) {
 	var expectedUserId int64 = 1541815603606036480
 	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
 	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMockError()
-	request, err := public_domain_request.New(expectedUserId, "attestify.io")
-	if err != nil {
-		t.Fatalf("An error was returned when instantiating the PublicDomainRequst. No error was expected."+
-			"\n Error: %s ", err.Error())
-	}
+	request := public_domain_request.New(expectedUserId, "attestify.io")
 
 	// Act
 	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
@@ -175,11 +167,7 @@ func Test_RegistrationGateway_Returns_Error(t *testing.T) {
 	var expectedDomainId int64 = 1541815603606036481
 	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(true)
 	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(expectedDomainId)
-	request, err := public_domain_request.New(expectedUserId, "attestify.io")
-	if err != nil {
-		t.Fatalf("An error was returned when instantiating the PublicDomainRequst. No error was expected."+
-			"\n Error: %s ", err.Error())
-	}
+	request := public_domain_request.New(expectedUserId, "attestify.io")
 
 	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
 	if err != nil {
@@ -209,11 +197,7 @@ func Test_ExecuteRequest_For_RegisterPublicDomain_With_Bad_DomainName(t *testing
 	var expectedDomainId int64 = 1541815603606036481
 	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
 	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(expectedDomainId)
-	request, err := public_domain_request.New(expectedUserId, "attestify.io-1")
-	if err != nil {
-		t.Fatalf("An error was returned when instantiating the PublicDomainRequst. No error was expected."+
-			"\n Error: %s ", err.Error())
-	}
+	request := public_domain_request.New(expectedUserId, "attestify.io-1")
 
 	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
 	if err != nil {

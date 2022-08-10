@@ -22,13 +22,9 @@ func Test_Instantiate_PublicDomainRequest_Successfully(t *testing.T) {
 	registeredName := "attestify.io"
 
 	// Act
-	request, err := New(userId, registeredName)
+	request := New(userId, registeredName)
 
 	// Assert
-	if err != nil {
-		t.Errorf("An error was returned when no error was expected.\n Error: %s ", err.Error())
-	}
-
 	actualDefaultDomainId := request.DomainId()
 	var expectedDefaultDomainId int64 = 0
 	if actualDefaultDomainId != expectedDefaultDomainId {
@@ -49,13 +45,9 @@ func Test_Instantiate_PublicDomainRequest_Get_Domain_Successfully(t *testing.T) 
 	registeredName := "attestify.io"
 
 	// Act
-	request, err := New(userId, registeredName)
+	request := New(userId, registeredName)
 
 	// Assert
-	if err != nil {
-		t.Fatalf("An error was returned when no error was expected.\n Error: %s ", err.Error())
-	}
-
 	actual := request.Domain()
 	expected := "attestify.io"
 	if actual != expected {
@@ -75,13 +67,9 @@ func Test_Instantiate_PublicDomainRequest_Get_UserId_Successfully(t *testing.T) 
 	registeredName := "attestify.io"
 
 	// Act
-	request, err := New(userId, registeredName)
+	request := New(userId, registeredName)
 
 	// Assert
-	if err != nil {
-		t.Fatalf("An error was returned when no error was expected.\n Error: %s ", err.Error())
-	}
-
 	actual := request.UserId()
 	var expected int64 = 1541815603606036480
 	if actual != expected {
@@ -101,12 +89,9 @@ func Test_Update_Default_DomainId_Successfully(t *testing.T) {
 	// Arrange
 	var userId int64 = 1541815603606036480
 	registeredName := "attestify.io"
+	request := New(userId, registeredName)
 
 	// Act
-	request, err := New(userId, registeredName)
-	if err != nil {
-		t.Errorf("An error was returned when no error was expected.\n Error: %s ", err.Error())
-	}
 	request.UpdateDomainId(1541815603606036481)
 
 	// Assert
@@ -114,6 +99,5 @@ func Test_Update_Default_DomainId_Successfully(t *testing.T) {
 	var expected int64 = 1541815603606036481
 	if actual != expected {
 		t.Errorf("The exptected domain was not returned. \n Actual: %d \n Expected: %d", actual, expected)
-
 	}
 }
