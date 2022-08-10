@@ -74,7 +74,6 @@ func Test_ExecuteRequest_For_RegisterPublicDomain_Successfully(t *testing.T) {
 
 /** Sad Path **/
 
-// todo - add contains test for error
 // Given there is a nil IdentityGateway implementation provided to the RegisterPublicDomain constructor
 // and given the RegistrationGateway is not a nil implementation
 // when the RegisterPublicDomain use case is invoked
@@ -103,7 +102,6 @@ func Test_Nil_IdentityGateway(t *testing.T) {
 
 }
 
-// todo - add contains test for error
 // Given there is a nil RegistrationGateway implementation provided to the RegisterPublicDomain constructor
 // and given the IdentityGateway is not a nil implementation
 // when the RegisterPublicDomain use case is invoked
@@ -204,7 +202,40 @@ func Test_RegistrationGateway_Returns_Error(t *testing.T) {
 
 }
 
-// todo - test error for with bad domain name within request
+func Test_ExecuteRequest_For_RegisterPublicDomain_With_Bad_DomainName(t *testing.T) {
+	setup(t)
+	// Assemble
+	var expectedUserId int64 = 1541815603606036480
+	var expectedDomainId int64 = 1541815603606036481
+	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
+	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(expectedDomainId)
+	request, err := public_domain_request.New(expectedUserId, "attestify.io-1")
+	if err != nil {
+		t.Fatalf("An error was returned when instantiating the PublicDomainRequst. No error was expected."+
+			"\n Error: %s ", err.Error())
+	}
+
+	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
+	if err != nil {
+		t.Fatalf("An error was returned when instantiating the RegisterPublicDomain use case. No error was expected."+
+			"\n Error: %s ", err.Error())
+	}
+
+	// Act
+	err = usecase.Register(&request)
+	if err == nil {
+		t.Fatalf("An error was expected from RegisterPublicDomain.Register(...), but none was returned.")
+	}
+
+	// Assert
+	expectedError := "error creating the PublicDomain entity:"
+	containsError := strings.Contains(err.Error(), expectedError)
+	if !containsError {
+		t.Errorf("the retuned error does not start with the expected string: \n Actual %s \n Expected %s",
+			err.Error(), expectedError)
+	}
+
+}
 
 /** Mocks **/
 
