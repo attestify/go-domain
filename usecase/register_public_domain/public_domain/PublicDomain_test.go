@@ -31,7 +31,7 @@ func Test_Instantiate_PublicDomain(t *testing.T) {
 // Test_Instantiate_PublicDomain_RegisteredName_Check return a value of "attestify.io" without error
 // given the registered domain name provided is "attestify.io" and,
 // given the domain id provided is "1541815603606036480"
-func Test_Instantiate_PublicDomain_ValueCheck(t *testing.T) {
+func Test_Instantiate_PublicDomain_Check_Domain(t *testing.T) {
 	setup(t)
 	var domainId int64 = 1541815603606036480
 	registeredName := "attestify.io"
