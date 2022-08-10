@@ -130,6 +130,10 @@ func Test_Nil_RegistrationGateway(t *testing.T) {
 
 }
 
+// todo - test error for IdentityGateway
+// todo - test error for RegistrationGateway
+// todo - test error for with bad domain name within request
+
 /** Mocks **/
 
 /** IdentityGatewayMock **/
