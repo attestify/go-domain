@@ -4,7 +4,6 @@ import (
 	"errors"
 	"github.com/attestify/go-domain/gateway"
 	"github.com/attestify/go-domain/usecase/register_public_domain"
-	"github.com/attestify/go-domain/usecase/register_public_domain/public_domain"
 	"github.com/attestify/go-domain/usecase/register_public_domain/public_domain_request"
 	"testing"
 )
@@ -57,9 +56,9 @@ func Test_ExecuteRequest_For_RegisterPublicDomain_Successfully(t *testing.T) {
 		t.Fatalf("An error was returned when instantiating the RegisterPublicDomain use case. No error was expected."+
 			"\n Error: %s ", err.Error())
 	}
-	err = usecase.MakeRequest(&request)
+	err = usecase.Register(&request)
 	if err != nil {
-		t.Fatalf("An error was returned when invoking RegisterPublicDomain.MakeRequest(...). No error was expected."+
+		t.Fatalf("An error was returned when invoking RegisterPublicDomain.Register(...). No error was expected."+
 			"\n Error: %s ", err.Error())
 	}
 
@@ -163,7 +162,8 @@ func NewRegistrationGatewayMock(returnError bool) RegistrationGatewayMock {
 	}
 }
 
-func (gateway RegistrationGatewayMock) RegisterPublicDomain(publicDomain public_domain.PublicDomain) error {
+func (gateway RegistrationGatewayMock) RegisterPublicDomain(userId int64, publicDomain register_public_domain.
+	PublicDomainEntity) error {
 	if gateway.returnError {
 		return errors.New("error with Registration Gateway")
 	} else {

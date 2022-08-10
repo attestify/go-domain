@@ -30,7 +30,7 @@ func New(identityGateway gateway.IdentityGateway, registrationGateway Registrati
 	}, nil
 }
 
-func (usecsae RegisterPublicDomain) MakeRequest(request *public_domain_request.PublicDomainRequest) error {
+func (usecsae RegisterPublicDomain) Register(request *public_domain_request.PublicDomainRequest) error {
 	domainId := usecsae.identityGateway.GenerateId()
 	request.UpdateDomainId(domainId)
 
@@ -39,7 +39,7 @@ func (usecsae RegisterPublicDomain) MakeRequest(request *public_domain_request.P
 		return errors.New("error creating the PublicDomain entity: /n " + err.Error())
 	}
 
-	err = usecsae.registrationGateway.RegisterPublicDomain(publicDomain)
+	err = usecsae.registrationGateway.RegisterPublicDomain(request.UserId(), publicDomain)
 	if err != nil {
 		return errors.New("error registering the PublicDomain entity using the Registration Gateway: /n " + err.
 			Error())

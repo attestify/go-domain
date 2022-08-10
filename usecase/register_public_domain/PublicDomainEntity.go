@@ -4,6 +4,5 @@ package register_public_domain
 // instantiation of the public domain entity across software boundaries.
 type PublicDomainEntity interface {
 	Domain() string
-	DomainId() int64
 	Id() int64
 }

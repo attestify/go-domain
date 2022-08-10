@@ -28,10 +28,10 @@ func New(domainId int64, domain string) (PublicDomain, error) {
 
 }
 
-func (pd *PublicDomain) Domain() registered_name.RegisteredName {
-	return pd.registeredName
+func (pd PublicDomain) Domain() string {
+	return pd.registeredName.Value()
 }
 
-func (pd *PublicDomain) Id() id.Id {
-	return pd.domainId
+func (pd PublicDomain) Id() int64 {
+	return pd.domainId.AsInteger()
 }

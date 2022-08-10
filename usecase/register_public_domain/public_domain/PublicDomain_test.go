@@ -41,14 +41,15 @@ func Test_Instantiate_PublicDomain_ValueCheck(t *testing.T) {
 		t.Fatalf("An error was returned when no error was expected.\n Error: %s ", err.Error())
 	}
 
-	name := entity.Domain()
-	actual := name.Value()
+	actual := entity.Domain()
 	expected := "attestify.io"
 	if expected != actual {
 		t.Errorf("Did not return the expected value.\nActual: %s\nExpected: %s", actual, expected)
 	}
 
 }
+
+// todo - public domain id check
 
 /** Sad Paths **/
 
