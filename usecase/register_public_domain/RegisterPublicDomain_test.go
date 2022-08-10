@@ -13,7 +13,9 @@ func setup(t *testing.T) {
 	t.Parallel()
 }
 
-// Given a new Register Public Domain use case is instantiated, when a user id of "1541815603606036480" is provided,
+/** Happy Path **/
+
+// Given a new RegisterPublicDomain use case is instantiated, when a user id of "1541815603606036480" is provided,
 // and when a registered name of "attestify.io" is provided, then the RegisterPublicDomain use case should instantiate
 // without any errors.
 func Test_Instantiate_RegisterPublicDomain_Successfully(t *testing.T) {
@@ -32,7 +34,10 @@ func Test_Instantiate_RegisterPublicDomain_Successfully(t *testing.T) {
 	}
 }
 
-// todo - provide description
+// Given a user with Id "1541815603606036480" requests to register the public domain of "attestify.io"
+// and Given the IdentityGateway provides a value of "1541815603606036481" for a domain Id
+// then the RegisterPublicDomain usecase should execute without error
+// and mutate the PublicDomainRequest domain id to be "1541815603606036481"
 func Test_ExecuteRequest_For_RegisterPublicDomain_Successfully(t *testing.T) {
 	setup(t)
 	// Assemble
@@ -69,7 +74,11 @@ func Test_ExecuteRequest_For_RegisterPublicDomain_Successfully(t *testing.T) {
 
 /** Sad Path **/
 
-// todo - provide description
+// Given there is a nil IdentityGateway implementation provided to the RegisterPublicDomain constructor
+// and given the RegistrationGateway is not a nil implementation
+// when the RegisterPublicDomain use case is invoked
+// then an error should be returned with the text,
+// "the provided identity gateway is nil, please provide a valid instance of an identity gateway"
 func Test_Nil_IdentityGateway(t *testing.T) {
 	setup(t)
 
@@ -93,7 +102,11 @@ func Test_Nil_IdentityGateway(t *testing.T) {
 
 }
 
-// todo - provide description
+// Given there is a nil RegistrationGateway implementation provided to the RegisterPublicDomain constructor
+// and given the IdentityGateway is not a nil implementation
+// when the RegisterPublicDomain use case is invoked
+// then an error should be returned with the text,
+// "the provided RegistrationGateway is nil, please provide a valid instance of a RegistrationGateway"
 func Test_Nil_RegistrationGateway(t *testing.T) {
 	setup(t)
 
@@ -116,9 +129,6 @@ func Test_Nil_RegistrationGateway(t *testing.T) {
 	}
 
 }
-
-// todo - test with error returned from identity gateway
-// todo - test with with returned from registration gateway
 
 /** Mocks **/
 
