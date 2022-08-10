@@ -10,8 +10,11 @@ func setup(t *testing.T) {
 
 /** Happy Path Tests **/
 
-// Test_Instantiate_PublicDomainRequest should successfully instantiate a PublicDomainRequest without error given the domain entered is "attestify.io"
-// todo - updated description
+// Given a user id with the value of "1541815603606036480" is provided, and
+// given a registered name with the value of "attestify.io" is provided
+// when the PublicDomainRequest object is constructed successfully
+// then no errors should be returned
+// and the domain id should default to "0"
 func Test_Instantiate_PublicDomainRequest_Successfully(t *testing.T) {
 	setup(t)
 	// Arrange
@@ -34,7 +37,11 @@ func Test_Instantiate_PublicDomainRequest_Successfully(t *testing.T) {
 	}
 }
 
-// todo - updated description
+// Given a user id with the value of "1541815603606036480" is provided, and
+// given a registered name with the value of "attestify.io" is provided
+// when the PublicDomainRequest object is constructed successfully
+// then no errors should be returned
+// and it should return the domain name of "attestify.io"
 func Test_Instantiate_PublicDomainRequest_Get_Domain_Successfully(t *testing.T) {
 	setup(t)
 	// Arrange
@@ -56,7 +63,11 @@ func Test_Instantiate_PublicDomainRequest_Get_Domain_Successfully(t *testing.T) 
 	}
 }
 
-// todo - updated description
+// Given a user id with the value of "1541815603606036480" is provided, and
+// given a registered name with the value of "attestify.io" is provided
+// when the PublicDomainRequest object is constructed successfully
+// then no errors should be returned
+// and it should return the user id of "1541815603606036480"
 func Test_Instantiate_PublicDomainRequest_Get_UserId_Successfully(t *testing.T) {
 	setup(t)
 	// Arrange
@@ -79,7 +90,12 @@ func Test_Instantiate_PublicDomainRequest_Get_UserId_Successfully(t *testing.T) 
 
 }
 
-// todo - updated description
+// Given a user id with the value of "1541815603606036480" is provided, and
+// given a registered name with the value of "attestify.io" is provided
+// when the PublicDomainRequest object is constructed successfully
+// then no errors should be returned
+// and when the domain id is updated to "1541815603606036481"
+// then the id returned from DomainId() should be "1541815603606036480"
 func Test_Update_Default_DomainId_Successfully(t *testing.T) {
 	setup(t)
 	// Arrange
