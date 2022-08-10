@@ -1,6 +1,7 @@
-package public_domain
+package public_domain_test
 
 import (
+	"github.com/attestify/go-domain/usecase/register_public_domain/public_domain"
 	"testing"
 )
 
@@ -18,7 +19,7 @@ func Test_Instantiate_PublicDomain(t *testing.T) {
 	setup(t)
 	var domainId int64 = 1541815603606036480
 	registeredName := "attestify.io"
-	_, err := New(domainId, registeredName)
+	_, err := public_domain.New(domainId, registeredName)
 
 	// Fatal use to end test if an error object was not returned because the expressions after this evaluate the error object
 	if err != nil {
@@ -34,7 +35,7 @@ func Test_Instantiate_PublicDomain_ValueCheck(t *testing.T) {
 	setup(t)
 	var domainId int64 = 1541815603606036480
 	registeredName := "attestify.io"
-	entity, err := New(domainId, registeredName)
+	entity, err := public_domain.New(domainId, registeredName)
 
 	// Fatal use to end test if an error object was not returned because the expressions after this evaluate the error object
 	if err != nil {
@@ -59,7 +60,7 @@ func Test_Instantiate_PublicDomain_Error(t *testing.T) {
 	setup(t)
 	var domainId int64 = 1541815603606036480
 	badRegisteredName := "1attestify.io-com"
-	_, err := New(domainId, badRegisteredName)
+	_, err := public_domain.New(domainId, badRegisteredName)
 
 	// Fatal use to end test if an error object was not returned because the expressions after this evaluate the error object
 	if err == nil {
