@@ -74,6 +74,7 @@ func Test_ExecuteRequest_For_RegisterPublicDomain_Successfully(t *testing.T) {
 
 /** Sad Path **/
 
+// todo - add contains test for error
 // Given there is a nil IdentityGateway implementation provided to the RegisterPublicDomain constructor
 // and given the RegistrationGateway is not a nil implementation
 // when the RegisterPublicDomain use case is invoked
@@ -102,6 +103,7 @@ func Test_Nil_IdentityGateway(t *testing.T) {
 
 }
 
+// todo - add contains test for error
 // Given there is a nil RegistrationGateway implementation provided to the RegisterPublicDomain constructor
 // and given the IdentityGateway is not a nil implementation
 // when the RegisterPublicDomain use case is invoked
@@ -165,7 +167,43 @@ func Test_IdentityGateway_Returns_Error(t *testing.T) {
 
 }
 
-// todo - test error for RegistrationGateway
+// Given a user with Id "1541815603606036480" requests to register the public domain of "attestify.io"
+// and Given the RegistrationGateway returns and error when invoked
+// then the RegisterPublicDomain usecase should return an error that starts with "error invoking the RegistrationGateway:"
+func Test_RegistrationGateway_Returns_Error(t *testing.T) {
+	setup(t)
+	// Assemble
+	var expectedUserId int64 = 1541815603606036480
+	var expectedDomainId int64 = 1541815603606036481
+	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(true)
+	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(expectedDomainId)
+	request, err := public_domain_request.New(expectedUserId, "attestify.io")
+	if err != nil {
+		t.Fatalf("An error was returned when instantiating the PublicDomainRequst. No error was expected."+
+			"\n Error: %s ", err.Error())
+	}
+
+	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
+	if err != nil {
+		t.Fatalf("An error was returned when instantiating the RegisterPublicDomain use case. No error was expected."+
+			"\n Error: %s ", err.Error())
+	}
+
+	// Act
+	err = usecase.Register(&request)
+
+	// Assert
+	if err == nil {
+		t.Fatal("an error is expected, although no error was thrown")
+	}
+
+	containsError := strings.Contains(err.Error(), "error invoking the RegistrationGateway:")
+	if !containsError {
+		t.Errorf("expcted the error to start with 'error invoking the RegistrationGateway:' and it does not.")
+	}
+
+}
+
 // todo - test error for with bad domain name within request
 
 /** Mocks **/

@@ -44,7 +44,7 @@ func (usecase RegisterPublicDomain) Register(request *public_domain_request.Publ
 
 	err = usecase.registrationGateway.RegisterPublicDomain(request.UserId(), publicDomain)
 	if err != nil {
-		return errors.New("error registering the PublicDomain entity using the Registration Gateway: /n " + err.
+		return errors.New("error invoking the RegistrationGateway: /n " + err.
 			Error())
 	}
 
