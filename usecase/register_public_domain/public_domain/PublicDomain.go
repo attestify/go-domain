@@ -1,7 +1,6 @@
 package public_domain
 
 import (
-	"errors"
 	"github.com/attestify/go-kernel/identity/id"
 	"github.com/attestify/go-kernel/uri/registered_name"
 )
@@ -15,10 +14,8 @@ type PublicDomain struct {
 func New(domainId int64, domain string) (PublicDomain, error) {
 
 	_registeredName, err := registered_name.NewFromString(domain)
-
 	if err != nil {
-		errorMessage := "Error creating a Public Domain: " + err.Error()
-		return PublicDomain{}, errors.New(errorMessage)
+		return PublicDomain{}, err
 	}
 
 	return PublicDomain{

@@ -1,7 +1,9 @@
 package public_domain_test
 
 import (
+	"errors"
 	"github.com/attestify/go-domain/usecase/register_public_domain/public_domain"
+	"github.com/attestify/go-kernel/error/validation_error"
 	"testing"
 )
 
@@ -86,5 +88,10 @@ func Test_Instantiate_PublicDomain_Error(t *testing.T) {
 	if err == nil {
 		t.Fatalf("An error was expceted, but none retured.")
 	}
+
+	if !errors.As(err, &validation_error.ValidationError{}) {
+		t.Errorf("did not get the epected error of type ValidationError")
+	}
+
 
 }

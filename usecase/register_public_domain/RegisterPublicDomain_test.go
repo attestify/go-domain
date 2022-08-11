@@ -13,6 +13,8 @@ func setup(t *testing.T) {
 	t.Parallel()
 }
 
+// todo - Provide custom errors - ValidationError, InternalError
+
 /** Happy Path **/
 
 // Given a new RegisterPublicDomain use case is instantiated, when a user id of "1541815603606036480" is provided,
