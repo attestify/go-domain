@@ -5,15 +5,14 @@ import (
 	"github.com/attestify/go-domain/gateway"
 	"github.com/attestify/go-domain/usecase/register_public_domain"
 	"github.com/attestify/go-domain/usecase/register_public_domain/public_domain_request"
-	"strings"
+	"github.com/attestify/go-kernel/error/internal_error"
+	"github.com/attestify/go-kernel/error/validation_error"
 	"testing"
 )
 
 func setup(t *testing.T) {
 	t.Parallel()
 }
-
-// todo - Provide custom errors - ValidationError, InternalError
 
 /** Happy Path **/
 
@@ -92,6 +91,10 @@ func Test_Nil_IdentityGateway(t *testing.T) {
 		t.Fatalf("an error is expected, although no error was thrown")
 	}
 
+	if !errors.As(err, &internal_error.InternalError{}) {
+		t.Errorf("did not get the epected error of type InternalError")
+	}
+
 	expected := "the provided identity gateway is nil, please provide a valid instance of an identity gateway"
 	actual := err.Error()
 	if expected != actual {
@@ -120,10 +123,49 @@ func Test_Nil_RegistrationGateway(t *testing.T) {
 		t.Fatalf("an error is expected, although no error was thrown")
 	}
 
+	if !errors.As(err, &internal_error.InternalError{}) {
+		t.Errorf("did not get the epected error of type InternalError")
+	}
+
 	expected := "the provided RegistrationGateway is nil, please provide a valid instance of a RegistrationGateway"
 	actual := err.Error()
 	if expected != actual {
 		t.Errorf("The exptected error was not returned. \n Actual: %s \n Expected: %s", actual, expected)
+	}
+
+}
+
+// Given a user provides a PublicDomainRequest
+// and the user Id is "1541815603606036480", a valid id
+// and the domain Id is "1541815603606036481", a valid id
+// and the domain ane is "attestify.io-1", an invalid domain name
+// When the .Request(...) function is invoked
+// Then a ValidationError should be returned
+func Test_ExecuteRequest_For_RegisterPublicDomain_With_Bad_DomainName(t *testing.T) {
+	setup(t)
+	// Assemble
+	var expectedUserId int64 = 1541815603606036480
+	var expectedDomainId int64 = 1541815603606036481
+	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
+	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(expectedDomainId)
+	request := public_domain_request.New(expectedUserId, "attestify.io-1")
+
+	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
+	if err != nil {
+		t.Fatalf("An error was returned when instantiating the RegisterPublicDomain use case. No error was expected."+
+			"\n Error: %s ", err.Error())
+	}
+
+	// Act
+	err = usecase.Register(&request)
+
+	// Assert
+	if err == nil {
+		t.Fatalf("An error was expected from RegisterPublicDomain.Register(...), but none was returned.")
+	}
+
+	if !errors.As(err, &validation_error.ValidationError{}) {
+		t.Errorf("did not get the epected error of type ValidationError")
 	}
 
 }
@@ -152,9 +194,8 @@ func Test_IdentityGateway_Returns_Error(t *testing.T) {
 		t.Fatal("an error is expected, although no error was thrown")
 	}
 
-	containsError := strings.Contains(err.Error(), "error invoking the IdentityGateway:")
-	if !containsError {
-		t.Errorf("expcted the error to start with 'error invoking the IdentityGateway:' and it does not.")
+	if !errors.As(err, &internal_error.InternalError{}) {
+		t.Errorf("did not get the epected error of type InternalError")
 	}
 
 }
@@ -185,40 +226,8 @@ func Test_RegistrationGateway_Returns_Error(t *testing.T) {
 		t.Fatal("an error is expected, although no error was thrown")
 	}
 
-	containsError := strings.Contains(err.Error(), "error invoking the RegistrationGateway:")
-	if !containsError {
-		t.Errorf("expcted the error to start with 'error invoking the RegistrationGateway:' and it does not.")
-	}
-
-}
-
-func Test_ExecuteRequest_For_RegisterPublicDomain_With_Bad_DomainName(t *testing.T) {
-	setup(t)
-	// Assemble
-	var expectedUserId int64 = 1541815603606036480
-	var expectedDomainId int64 = 1541815603606036481
-	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
-	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(expectedDomainId)
-	request := public_domain_request.New(expectedUserId, "attestify.io-1")
-
-	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
-	if err != nil {
-		t.Fatalf("An error was returned when instantiating the RegisterPublicDomain use case. No error was expected."+
-			"\n Error: %s ", err.Error())
-	}
-
-	// Act
-	err = usecase.Register(&request)
-	if err == nil {
-		t.Fatalf("An error was expected from RegisterPublicDomain.Register(...), but none was returned.")
-	}
-
-	// Assert
-	expectedError := "error creating the PublicDomain entity:"
-	containsError := strings.Contains(err.Error(), expectedError)
-	if !containsError {
-		t.Errorf("the retuned error does not start with the expected string: \n Actual %s \n Expected %s",
-			err.Error(), expectedError)
+	if !errors.As(err, &internal_error.InternalError{}) {
+		t.Errorf("did not get the epected error of type InternalError")
 	}
 
 }
@@ -269,7 +278,7 @@ func NewRegistrationGatewayMock(returnError bool) RegistrationGatewayMock {
 func (gateway RegistrationGatewayMock) RegisterPublicDomain(userId int64, publicDomain register_public_domain.
 	PublicDomainEntity) error {
 	if gateway.returnError {
-		return errors.New("error with Registration Gateway")
+		return internal_error.New("error with Registration Gateway")
 	} else {
 		return nil
 	}
