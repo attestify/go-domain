@@ -93,5 +93,4 @@ func Test_Instantiate_PublicDomain_Error(t *testing.T) {
 		t.Errorf("did not get the epected error of type ValidationError")
 	}
 
-
 }
