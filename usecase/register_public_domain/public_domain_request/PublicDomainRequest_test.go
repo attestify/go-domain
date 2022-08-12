@@ -4,8 +4,6 @@ import (
 	"testing"
 )
 
-// todo - update to return chjeck for InternalError with gateways
-
 func setup(t *testing.T) {
 	t.Parallel()
 }
