@@ -15,15 +15,15 @@ func New(userId int64, domain string) PublicDomainRequest {
 	}
 }
 
-func (request *PublicDomainRequest) Domain() string {
+func (request PublicDomainRequest) Domain() string {
 	return request.domain
 }
 
-func (request *PublicDomainRequest) UserId() int64 {
+func (request PublicDomainRequest) UserId() int64 {
 	return request.userId
 }
 
-func (request *PublicDomainRequest) DomainId() int64 {
+func (request PublicDomainRequest) DomainId() int64 {
 	return request.domainId
 }
 
