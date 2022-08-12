@@ -5,6 +5,7 @@ import (
 	"github.com/attestify/go-domain/gateway"
 	"github.com/attestify/go-domain/usecase/register_public_domain"
 	"github.com/attestify/go-domain/usecase/register_public_domain/public_domain_request"
+	"github.com/attestify/go-kernel/error/already_exists"
 	"github.com/attestify/go-kernel/error/internal_error"
 	"github.com/attestify/go-kernel/error/validation_error"
 	"testing"
@@ -23,7 +24,7 @@ func Test_Instantiate_RegisterPublicDomain_Successfully(t *testing.T) {
 	setup(t)
 
 	// Assemble
-	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
+	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock()
 	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(1541815603606036480)
 
 	// Act
@@ -44,7 +45,7 @@ func Test_ExecuteRequest_For_RegisterPublicDomain_Successfully(t *testing.T) {
 	// Assemble
 	var expectedUserId int64 = 1541815603606036480
 	var expectedDomainId int64 = 1541815603606036481
-	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
+	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock()
 	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(expectedDomainId)
 	request := public_domain_request.New(expectedUserId, "attestify.io")
 
@@ -80,7 +81,7 @@ func Test_Nil_IdentityGateway(t *testing.T) {
 	setup(t)
 
 	// Assemble
-	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
+	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock()
 	var identityGateway gateway.IdentityGateway = nil
 
 	// Act
@@ -146,8 +147,8 @@ func Test_ExecuteRequest_For_RegisterPublicDomain_With_Bad_DomainName(t *testing
 	// Assemble
 	var expectedUserId int64 = 1541815603606036480
 	var expectedDomainId int64 = 1541815603606036481
-	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
-	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(expectedDomainId)
+	registrationGateway := NewRegistrationGatewayMock()
+	identityGateway := NewIdentityGatewayMock(expectedDomainId)
 	request := public_domain_request.New(expectedUserId, "attestify.io-1")
 
 	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
@@ -173,12 +174,12 @@ func Test_ExecuteRequest_For_RegisterPublicDomain_With_Bad_DomainName(t *testing
 // Given a user with Id "1541815603606036480" requests to register the public domain of "attestify.io"
 // and Given the IdentityGateway returns and error when invoked
 // then the RegisterPublicDomain usecase should return an error that starts with "error invoking the IdentityGateway:"
-func Test_IdentityGateway_Returns_Error(t *testing.T) {
+func Test_IdentityGateway_Returns_InternalError(t *testing.T) {
 	setup(t)
 	// Assemble
 	var expectedUserId int64 = 1541815603606036480
-	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(false)
-	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMockError()
+	registrationGateway := NewRegistrationGatewayMock()
+	identityGateway := NewIdentityGatewayMockError()
 	request := public_domain_request.New(expectedUserId, "attestify.io")
 
 	// Act
@@ -201,15 +202,16 @@ func Test_IdentityGateway_Returns_Error(t *testing.T) {
 }
 
 // Given a user with Id "1541815603606036480" requests to register the public domain of "attestify.io"
-// and Given the RegistrationGateway returns and error when invoked
-// then the RegisterPublicDomain usecase should return an error that starts with "error invoking the RegistrationGateway:"
-func Test_RegistrationGateway_Returns_Error(t *testing.T) {
+// and Given the RegistrationGateway returns and InternalError when invoked
+// then the RegisterPublicDomain usecase returns an InternalError
+func Test_RegistrationGateway_Returns_InternalError(t *testing.T) {
 	setup(t)
 	// Assemble
 	var expectedUserId int64 = 1541815603606036480
 	var expectedDomainId int64 = 1541815603606036481
-	var registrationGateway register_public_domain.RegistrationGateway = NewRegistrationGatewayMock(true)
-	var identityGateway gateway.IdentityGateway = NewIdentityGatewayMock(expectedDomainId)
+	registrationGateway := NewRegistrationGatewayMock()
+	registrationGateway.ReturnInternalError()
+	identityGateway := NewIdentityGatewayMock(expectedDomainId)
 	request := public_domain_request.New(expectedUserId, "attestify.io")
 
 	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
@@ -227,6 +229,39 @@ func Test_RegistrationGateway_Returns_Error(t *testing.T) {
 	}
 
 	if !errors.As(err, &internal_error.InternalError{}) {
+		t.Errorf("did not get the epected error of type InternalError")
+	}
+
+}
+
+// Given a user with Id "1541815603606036480" requests to register the public domain of "attestify.io"
+// and Given the RegistrationGateway returns an AlreadyExists error when invoked
+// then the RegisterPublicDomain usecase should return an AlreadyExists error
+func Test_RegistrationGateway_Returns_AlreadyExists_Error(t *testing.T) {
+	setup(t)
+	// Assemble
+	var expectedUserId int64 = 1541815603606036480
+	var expectedDomainId int64 = 1541815603606036481
+	registrationGateway := NewRegistrationGatewayMock()
+	registrationGateway.ReturnAlreadyExistsError()
+	identityGateway := NewIdentityGatewayMock(expectedDomainId)
+	request := public_domain_request.New(expectedUserId, "attestify.io")
+
+	usecase, err := register_public_domain.New(identityGateway, registrationGateway)
+	if err != nil {
+		t.Fatalf("An error was returned when instantiating the RegisterPublicDomain use case. No error was expected."+
+			"\n Error: %s ", err.Error())
+	}
+
+	// Act
+	err = usecase.Register(&request)
+
+	// Assert
+	if err == nil {
+		t.Fatal("an error is expected, although no error was thrown")
+	}
+
+	if !errors.As(err, &already_exists.AlreadyExists{}) {
 		t.Errorf("did not get the epected error of type InternalError")
 	}
 
@@ -265,21 +300,30 @@ func (gateway IdentityGatewayMock) GenerateId() (int64, error) {
 
 /** RegistrationGatewayMock **/
 type RegistrationGatewayMock struct {
-	returnError bool
-	wasCalled   bool
+	returnInternalError      bool
+	returnAlreadyExistsError bool
 }
 
-func NewRegistrationGatewayMock(returnError bool) RegistrationGatewayMock {
-	return RegistrationGatewayMock{
-		returnError: returnError,
-	}
+func NewRegistrationGatewayMock() RegistrationGatewayMock {
+	return RegistrationGatewayMock{}
+}
+
+func (gateway *RegistrationGatewayMock) ReturnInternalError() {
+	gateway.returnInternalError = true
+	gateway.returnAlreadyExistsError = false
+}
+
+func (gateway *RegistrationGatewayMock) ReturnAlreadyExistsError() {
+	gateway.returnInternalError = false
+	gateway.returnAlreadyExistsError = true
 }
 
 func (gateway RegistrationGatewayMock) RegisterPublicDomain(userId int64, publicDomain register_public_domain.
 	PublicDomainEntity) error {
-	if gateway.returnError {
+	if gateway.returnInternalError {
 		return internal_error.New("error with Registration Gateway")
-	} else {
-		return nil
+	} else if gateway.returnAlreadyExistsError  {
+		return already_exists.New("Entity already exists")
 	}
+	return nil
 }

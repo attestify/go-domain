@@ -6,7 +6,7 @@ import (
 	"github.com/attestify/go-domain/usecase/register_public_domain/public_domain_request"
 	"github.com/attestify/go-kernel/error/internal_error"
 )
-// todo - update to return ValidationError where necessary
+
 type RegisterPublicDomain struct {
 	identityGateway     gateway.IdentityGateway
 	registrationGateway RegistrationGateway
@@ -51,18 +51,15 @@ func (usecase RegisterPublicDomain) Register(request *public_domain_request.Publ
 		return internal_error.New(err.Error())
 	}
 
-	// todo - add a function to update the domain id;
-	// todo - create a constructor just for domain only?
-	// todo - then function to update id?
-	// todo - Add an error type for "AlreadyExists" to signify the domain name already exists
+	// Third, update the domain id for the entity
+	publicDomain.UpdateId(domainId)
 
-	// Third, attempt to register the public domain with the gateway
+	// Fourth, attempt to register the public domain with the gateway
 	err = usecase.registrationGateway.RegisterPublicDomain(request.UserId(), publicDomain)
 	if err != nil {
 		return err
 	}
 
-	// todo - Add a "Success" indicator to the request?
 	// Finally, update the request with the new domain Id, and return nil.
 	// This signifies the use case transaction was successful
 	request.UpdateDomainId(domainId)

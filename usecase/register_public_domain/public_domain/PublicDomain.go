@@ -25,6 +25,24 @@ func New(domainId int64, domain string) (PublicDomain, error) {
 
 }
 
+func NewFromDomainName(domain string) (PublicDomain, error) {
+
+	_registeredName, err := registered_name.NewFromString(domain)
+	if err != nil {
+		return PublicDomain{}, err
+	}
+
+	return PublicDomain{
+		domainId:       id.New(0),
+		registeredName: _registeredName,
+	}, nil
+
+}
+
+func (pd *PublicDomain) UpdateId(domainId int64) {
+	pd.domainId = id.New(domainId)
+}
+
 func (pd PublicDomain) Domain() string {
 	return pd.registeredName.Value()
 }
