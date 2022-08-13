@@ -2,7 +2,7 @@ package assign_role_test
 
 import (
 	"errors"
-	"github.com/attestify/go-domain/usecase/assign_role"
+	assign_role2 "github.com/attestify/go-domain/usecase/role/assign_role"
 	"github.com/attestify/go-kernel/error/internal_error"
 	"github.com/attestify/go-kernel/identity/id"
 	"testing"
@@ -20,7 +20,7 @@ func setup(t *testing.T) {
 func Test_Instantiate_AssignRole_Successfully(t *testing.T) {
 	setup(t)
 	assignRoleGateway := NewAssignRoleGatewayMock()
-	_, err := assign_role.New(assignRoleGateway)
+	_, err := assign_role2.New(assignRoleGateway)
 	if err != nil {
 		t.Errorf("An error was returned when no error was expected: \n %s", err.Error())
 	}
@@ -36,7 +36,7 @@ func Test_Invoke_Assign_Successfully(t *testing.T) {
 	setup(t)
 	// Assemble
 	gateway := NewAssignRoleGatewayMock()
-	usecase, err := assign_role.New(gateway)
+	usecase, err := assign_role2.New(gateway)
 	if err != nil {
 		t.Errorf("An error was returned when no error was expected: \n %s", err.Error())
 	}
@@ -61,10 +61,10 @@ func Test_Invoke_Assign_Successfully(t *testing.T) {
 func Test_Instantiate_AssignRole_With_Nil_AssignRoleGateway(t *testing.T) {
 	setup(t)
 	// Assemble
-	var assignRoleGateway assign_role.AssignRoleGateway = nil
+	var assignRoleGateway assign_role2.AssignRoleGateway = nil
 
 	// Act
-	_, err := assign_role.New(assignRoleGateway)
+	_, err := assign_role2.New(assignRoleGateway)
 
 	// Assert
 	if err == nil {
@@ -88,7 +88,7 @@ func Test_Invoke_Assign_Returns_InternalError(t *testing.T) {
 	// Assemble
 	gateway := NewAssignRoleGatewayMock()
 	gateway.ReturnInternalError()
-	usecase, err := assign_role.New(gateway)
+	usecase, err := assign_role2.New(gateway)
 	if err != nil {
 		t.Errorf("An error was returned when no error was expected: \n %s", err.Error())
 	}
