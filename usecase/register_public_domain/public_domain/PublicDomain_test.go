@@ -120,9 +120,7 @@ func Test_Updated_DomainId(t *testing.T) {
 		t.Errorf("Did not return the expected value.\nActual: %d\nExpected: %d", actual, expected)
 	}
 
-
 }
-
 
 /** Sad Paths **/
 

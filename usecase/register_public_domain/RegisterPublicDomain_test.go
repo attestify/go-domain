@@ -322,7 +322,7 @@ func (gateway RegistrationGatewayMock) RegisterPublicDomain(userId int64, public
 	PublicDomainEntity) error {
 	if gateway.returnInternalError {
 		return internal_error.New("error with Registration Gateway")
-	} else if gateway.returnAlreadyExistsError  {
+	} else if gateway.returnAlreadyExistsError {
 		return already_exists.New("Entity already exists")
 	}
 	return nil
