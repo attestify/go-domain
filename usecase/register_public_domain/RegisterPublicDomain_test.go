@@ -295,7 +295,6 @@ func (gateway IdentityGatewayMock) GenerateId() (int64, error) {
 	} else {
 		return gateway.expectedId, nil
 	}
-
 }
 
 /** RegistrationGatewayMock **/
